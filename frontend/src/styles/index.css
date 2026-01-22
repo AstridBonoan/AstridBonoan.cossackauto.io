@@ -1,0 +1,600 @@
+/* No external display font for the hero — use the site's system sans-serif for consistency */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Use border-box globally to prevent width+padding from causing horizontal overflow */
+*, *::before, *::after { box-sizing: border-box; }
+
+/* Display font for company name: Oswald — sharp, condensed, rigid appearance */
+.company-font{ font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; letter-spacing: 0.02em; -webkit-font-smoothing:antialiased; }
+
+/* Hero variant: allow the global `h1` rules (weight/size) to apply — keep tracking modest */
+.company-hero{ font-family: inherit; letter-spacing:0.02em; -webkit-font-smoothing:antialiased; }
+
+/* Make headings and section titles a bit bolder for better emphasis */
+h1{ font-weight:900; }
+h2{ font-weight:800; }
+h3{ font-weight:800; }
+
+/* Extra-bold section/box titles (overrides where needed) */
+.section-title, .reservation-form h3.section-title { font-weight:900 !important; }
+
+:root{
+	--color-charcoal: #0F1113;
+	--color-offwhite: #EFE7DD;
+	--color-red: #8E0F18;
+
+	/* spacing scale for chunky sections */
+	--section-pt-mobile: 4rem;
+	--section-pt-desktop: 10rem;
+
+	/* base font size */
+	--base-font-size: 14px;
+
+	/* approximate header/footer heights used for spacing only */
+	--header-h-mobile: 60px;
+	--footer-h-mobile: 56px;
+	--header-h-desktop: 72px;
+	--footer-h-desktop: 80px;
+}
+
+html,body,#root{height:100%;}
+
+/* Apply the base font-size variable to the root so rem units scale correctly */
+html{ font-size: var(--base-font-size); }
+/* Prevent horizontal scrolling on small devices caused by wide elements */
+html, body { overflow-x: hidden; }
+
+/* Ensure images never exceed their container width on mobile */
+img{ max-width:100%; height:auto; display:block; }
+
+/* Force hamburger toggle visibility up to 1024px (override Tailwind lg:hidden at 1024px) */
+.site-header button[aria-label="toggle menu"]{ display: block; }
+@media (min-width: 1025px){
+	.site-header button[aria-label="toggle menu"]{ display: none !important; }
+}
+
+/* Give the mobile header toggle some breathing room from the viewport edge */
+.site-header button[aria-label="toggle menu"]{ padding: 0.5rem; margin-right: 0.6rem; }
+
+body{
+	background-color: var(--color-offwhite);
+	color: var(--color-charcoal);
+	font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+	background-image: linear-gradient(rgba(0,0,0,0.02), rgba(0,0,0,0.02)), url('../assets/textures/paper-texture.png');
+	background-size: auto, cover;
+	font-size: var(--base-font-size);
+	line-height: 1.5;
+	-webkit-font-smoothing:antialiased;
+}
+
+/* Force sans-serif across all text elements to keep the look honest and utilitarian */
+body, h1, h2, h3, h4, h5, h6, p, a, button, input, select, textarea, label {
+	font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+}
+
+/* Main layout: rely on the page flex layout in `App.jsx` (min-h-screen + flex-column).
+   Avoid forcing `min-height` with calc(100vh - header) which caused extra vertical space.
+   Add a modest bottom padding to keep content visually clear above the footer/sticky bar. */
+main{ padding-bottom: calc(var(--footer-h-mobile) + 12px); min-height: auto; }
+@media (min-width: 768px){
+	main{ padding-bottom: calc(var(--footer-h-desktop) + 24px); }
+}
+
+.industrial-panel{
+	background-color: var(--color-offwhite);
+	background-image: url('../assets/textures/grain.png');
+	background-blend-mode: multiply;
+}
+
+.btn-primary{
+	background-color: var(--color-red);
+	color: var(--color-offwhite);
+	border: 1px solid rgba(0,0,0,0.12);
+	box-shadow: 0 3px 0 rgba(0,0,0,0.12);
+}
+
+.text-accent{ color: var(--color-red); }
+
+.site-header, .site-footer { background-color: var(--color-charcoal); color: var(--color-offwhite); width:100%; }
+
+/* Header spacing and stacking */
+.site-header { padding-top: 0.25rem; padding-bottom: 0.25rem; position:relative; z-index:50; background: linear-gradient(180deg, #0b0c0d 0%, var(--color-charcoal) 100%); box-shadow: inset 0 -1px 0 rgba(255,255,255,0.02); }
+
+.site-header .logo span { font-size: 0.95rem; letter-spacing: 0.03em; }
+/* Make navbar logo use the display font with a condensed, slightly bolder look to match the header image */
+.site-header .logo span { font-family: 'Oswald', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial; font-weight:500; text-transform:uppercase; }
+.site-header .logo { gap: 0.5rem; }
+.site-header .logo img{ height: 40px; width: 40px; }
+.site-header nav ul li a{ color: var(--color-offwhite); text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.9rem; padding: 0 0.6rem; }
+.site-header nav ul li { list-style: none; }
+
+.site-header nav { flex: 1; display:flex; justify-content:center; }
+
+/* keep nav links and header CTAs in the regular sans font (only company name uses display font) */
+.site-header nav ul li a, .site-header .btn-primary, .site-header button { font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial; }
+
+/* Layout helpers for header: keep logo/title locked at left, nav centered, CTA at right */
+.site-header .max-w-6xl > div { display:flex; align-items:center; }
+.site-header .logo { display:flex; align-items:center; gap:0.75rem; }
+.site-header nav { flex:1; display:flex; justify-content:center; }
+.site-header .btn-primary, .site-header .choose-btn { font-family: inherit; }
+/* Make footer sit flush at the bottom when the app is full-height */
+.site-footer { margin-top: auto; padding-top: 0.75rem; padding-bottom: 0.5rem; }
+
+/* Slightly smaller footer logo so the footer is more compact */
+.site-footer .logo img{ height: 40px; width: 40px; }
+/* Target the actual footer image used in Footer.jsx (alt="footer logo")
+	to override the Tailwind h-10/w-10 utilities applied in markup. */
+.site-footer img[alt="footer logo"]{ height: 40px; width: 40px; }
+
+/* Remove forced left-margin so the image can sit at the end when the container is full-width */
+.site-footer img[alt="footer logo"]{ margin-left: 0 !important; }
+
+/* Reservation form styles to match provided layout */
+.reservation-form {
+	border: 2px solid rgba(0,0,0,0.12);
+	padding: 40px;
+	background-color: var(--color-offwhite);
+	margin-top: 2.5rem;
+	margin-bottom: 3rem;
+	font-size: 1rem;
+	box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+	border-radius: 8px;
+}
+
+.reservation-form h3.section-title{
+	font-weight: 800;
+	letter-spacing: 0.02em;
+	font-size: 1.125rem;
+}
+
+/* Services cards */
+.service-card{ background: var(--color-offwhite); border: 1px solid rgba(0,0,0,0.12); }
+.service-card h3{ color: var(--color-charcoal); }
+.service-card p{ color: rgba(0,0,0,0.65); }
+.service-card a{ color: var(--color-red); }
+
+/* Slightly stronger card outline on hover for affordance */
+.service-card:hover{ border-color: rgba(0,0,0,0.18); box-shadow: 0 6px 18px rgba(0,0,0,0.04); transform: translateY(-4px); transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease; }
+
+/* Service card BOOK NOW button styling */
+.service-book{
+	background: transparent !important;
+	color: var(--color-red) !important;
+	border-radius: 4px;
+	box-shadow: none;
+	transition: transform .12s ease, box-shadow .12s ease, background-color .16s ease;
+	display:inline-block;
+	/* match original service-card BOOK NOW small pill */
+	padding: .75rem 2rem;
+	font-size: 1rem;
+	font-weight: 600;
+	text-decoration: none;
+	letter-spacing: .01em;
+}
+.service-book:hover{
+	transform: translateY(-1px);
+	background-color: rgba(142,15,24,0.08);
+	border-radius: 4px;
+	box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+}
+.service-book:active{ transform: translateY(-.4px); box-shadow:0 4px 8px rgba(0,0,0,0.04); }
+
+/* Apply same visual feedback when touch handler adds class */
+.service-book.touch-hover{
+	transform: translateY(-1px);
+	background-color: rgba(142,15,24,0.08);
+	border-radius: 4px;
+	box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+}
+
+/* Make vehicle/contact section titles inside the reservation form smaller */
+.reservation-form h3.section-title { font-size: 0.95rem; font-weight:700; letter-spacing:0.02em; }
+@media (min-width: 768px){
+  .reservation-form h3.section-title { font-size: 1rem; }
+}
+
+/* Stronger override targeting the actual form section to ensure sizing applies */
+form#reservation h3.section-title { font-size: 0.95rem !important; font-weight:700 !important; letter-spacing:0.02em !important; }
+@media (min-width: 768px){
+	form#reservation h3.section-title { font-size: 1rem !important; }
+}
+
+.reservation-label{ text-transform: uppercase; font-size: 0.8rem; color: #0B0C0D; font-weight:700; letter-spacing:0.04em; }
+.reservation-label span{ color: var(--color-red); }
+
+/* Ensure the inline required note shows as "(Required)" rather than inherited uppercase */
+.reservation-label .required-note{ text-transform: capitalize !important; font-style: italic; font-weight: 400; }
+
+.reservation-input, .reservation-select, .reservation-textarea{
+	width:100%;
+	border:1px solid rgba(0,0,0,0.12);
+	padding:1rem 1.1rem;
+	font-size:1.05rem;
+	background: transparent !important;
+	border-radius:8px;
+}
+
+/* Error state for reservation controls */
+.input-error{ border-color: var(--color-red) !important; box-shadow: 0 0 0 4px rgba(142,15,24,0.06) !important; background: transparent !important; }
+.reservation-select.input-error, .reservation-input.input-error, .reservation-textarea.input-error { border-color: var(--color-red) !important; background: transparent !important; }
+
+/* Valid state for reservation controls (live feedback) */
+.input-valid{ border-color: #10B981 !important; box-shadow: 0 0 0 4px rgba(16,185,129,0.06) !important; background: transparent !important; }
+.reservation-select.input-valid, .reservation-input.input-valid, .reservation-textarea.input-valid { border-color: #10B981 !important; background: transparent !important; }
+
+/* Ensure focus doesn't change background */
+.reservation-input:focus, .reservation-select:focus, .reservation-textarea:focus { background: transparent !important; }
+
+
+.file-chooser{
+	display:flex; align-items:center; gap:12px; border:1px solid rgba(0,0,0,0.12); padding:12px; background:transparent;
+}
+.choose-btn{
+	background:var(--color-charcoal);
+	color:var(--color-offwhite);
+	padding:8px 10px;
+	font-weight:700;
+	font-size:0.95rem;
+	border-radius:6px;
+	white-space:nowrap;
+	min-width:0;
+	width:auto;
+}
+.file-name{ color:rgba(0,0,0,0.7); }
+
+.submit-reservation{ background:var(--color-red); color:var(--color-offwhite); padding:16px 20px; width:100%; display:block; font-weight:800; letter-spacing:0.04em; font-size:1rem; border-radius:6px; box-shadow:0 4px 0 rgba(0,0,0,0.06); }
+
+
+/* Utility classes for explicit Tailwind fallback usage */
+.bg-charcoal { background-color: var(--color-charcoal); }
+.text-offwhite { color: var(--color-offwhite); }
+.bg-cossackred { background-color: var(--color-red); }
+
+/* Ensure desktop nav hidden on small screens and mobile nav hidden on desktop.
+ 	 This guards against Tailwind class issues and keeps behavior explicit. */
+.desktop-nav{ display: none !important; }
+@media (min-width: 1025px){
+ 	.desktop-nav{ display: flex !important; }
+}
+.mobile-nav{ display: none !important; }
+@media (max-width: 1024px){
+ 	.mobile-nav{ display: block !important; }
+}
+
+/* Hide the header BOOK NOW CTA on small and tablet screens so the mobile menu CTA is the single action */
+@media (max-width: 1024px){
+  .site-header .header-cta { display: none !important; }
+}
+
+/* Make sections chunky with lots of whitespace (mobile-first) */
+section{ padding-top: var(--section-pt-mobile); padding-bottom: var(--section-pt-mobile); }
+/* Reservation page needs less top whitespace so title and form sit higher */
+.reservation-section{ padding-top: 6rem; padding-bottom: var(--section-pt-mobile); }
+@media (min-width: 768px){
+	.reservation-section{ padding-top: 6rem; padding-bottom: var(--section-pt-desktop); }
+}
+@media (min-width: 768px){
+	section{ padding-top: var(--section-pt-desktop); padding-bottom: var(--section-pt-desktop); }
+	/* reduce overall content width so things read larger (zoomed-in) */
+	.max-w-6xl{ padding-left: 1.5rem; padding-right: 1.5rem; max-width: 72rem; }
+	/* stronger type scale for a 'zoomed-in' feel */
+	h1{ font-size: 4.75rem; }
+	h2{ font-size: 4rem; }
+	/* display font removed — using site's default sans for headings */
+
+	/* explicit charcoal text utility used in markup */
+	.text-charcoal{ color: var(--color-charcoal); }
+	h3{ font-size: 2.5rem; }
+	/* keep desktop base font aligned with root --base-font-size */
+	body{ font-size: var(--base-font-size); }
+	/* Reduce header density on desktop */
+	.site-header .logo span{ font-size: 1.25rem; }
+	.site-header .logo img{ height: 48px; width: 48px; }
+	.site-header{ padding-top: 0.75rem; padding-bottom:0.75rem }
+	.site-footer{ padding-top: 1rem; padding-bottom: 0.5rem }
+	/* Slightly smaller footer logo on desktop for a compact layout */
+	.site-footer .logo img{ height: 56px; width: 56px; }
+	/* Ensure the actual footer image (alt="footer logo") matches the desktop size */
+	.site-footer img[alt="footer logo"]{ height: 56px; width: 56px; }
+
+	/* No forced left-margin on desktop either so the image aligns at the end */
+	.site-footer img[alt="footer logo"]{ margin-left: 0 !important; }
+	.reservation-form{ padding: 64px }
+}
+
+/* About page: slightly larger, more legible content */
+#about .text-gray-600, #about p, #about .space-y-4 p { font-size: 1.125rem; line-height: 1.75; }
+#about h2{ font-size: 2.5rem; }
+#about h3{ font-size: 1.75rem; }
+
+@media (min-width: 768px){
+	#about .text-gray-600, #about p, #about .space-y-4 p { font-size: 1.25rem; }
+	#about h2{ font-size: 3.25rem; }
+	#about h3{ font-size: 2rem; }
+}
+
+/* Services page: match About page scale for readability */
+#services .text-gray-600, #services p, #services .space-y-4 p { font-size: 1.125rem; line-height: 1.75; }
+#services h2{ font-size: 2.5rem; }
+#services h3{ font-size: 1.75rem; }
+
+@media (min-width: 768px){
+	#services .text-gray-600, #services p, #services .space-y-4 p { font-size: 1.25rem; }
+	#services h2{ font-size: 3.25rem; }
+	#services h3{ font-size: 2rem; }
+}
+
+/* Tamer service-card titles for devices like Nest Hub (and similar widths)
+	 Keep card titles readable without overwhelming the card layout. */
+@media (max-width: 1280px) {
+	#services .service-card h3 {
+		font-size: clamp(1rem, 2.2vw, 1.5rem) !important;
+		line-height: 1.25 !important;
+		margin-bottom: 0.5rem;
+	}
+}
+
+/* Reviews page: match About/Services scale */
+#reviews .text-gray-600, #reviews p, #reviews .space-y-4 p { font-size: 1.125rem; line-height: 1.75; }
+#reviews h2{ font-size: 2.5rem; }
+#reviews h3{ font-size: 1.75rem; }
+
+@media (min-width: 768px){
+	#reviews .text-gray-600, #reviews p, #reviews .space-y-4 p { font-size: 1.25rem; }
+	#reviews h2{ font-size: 3.25rem; }
+	#reviews h3{ font-size: 2rem; }
+}
+
+/* Reservation page: match About/Services/Reviews scale */
+#reservation .text-gray-600, #reservation p, #reservation .space-y-4 p { font-size: 1.125rem; line-height: 1.75; }
+#reservation h2, #reservation .section-title{ font-size: 2rem; }
+#reservation h3{ font-size: 1.75rem; }
+
+@media (min-width: 768px){
+	#reservation .text-gray-600, #reservation p, #reservation .space-y-4 p { font-size: 1.25rem; }
+	#reservation h2, #reservation .section-title{ font-size: 2.75rem; }
+	#reservation h3{ font-size: 2rem; }
+}
+
+/* Increase the main Reservation page title (`h2` inside .reservation-section) */
+.reservation-section h2{ font-size: 2.25rem; }
+@media (min-width: 768px){
+	.reservation-section h2{ font-size: 3rem; }
+}
+
+/* Make paragraphs larger for better readability */
+p{ font-size: 1.05rem; }
+@media (min-width: 768px){
+	p{ font-size: 1.125rem; }
+}
+
+/* form controls scaled up to feel less cramped */
+.reservation-form .reservation-input,
+.reservation-form .reservation-select,
+.reservation-form .reservation-textarea{
+	padding: 1rem 1.1rem;
+	font-size: 1.05rem;
+	border-radius: 8px;
+	border: 1px solid rgba(0,0,0,0.12);
+}
+.reservation-form .reservation-textarea{ min-height: 160px }
+
+/* make hero CTAs a bit larger */
+.hero-cta, .btn-primary{ padding: 14px 22px; font-size:1.05rem; border-radius:8px }
+
+/* Ensure hero primary and secondary CTAs can be forced to equal width on wider screens */
+@media (min-width: 640px){
+	.hero-equal{ min-width: 180px !important; display: inline-block !important; }
+}
+
+/* Tweak hero on small devices to avoid an overly 'zoomed' layout */
+@media (max-width: 639px) {
+	/* Reduce the hero min-height so it doesn't fill most of the viewport on small phones */
+	#home { min-height: 50vh !important; padding-top: 0.75rem; padding-bottom: 1.5rem; display:flex; flex-direction:column; justify-content:center; align-items:center; }
+	/* Slightly smaller hero title on smallest screens */
+	#home .company-hero { font-size: 2.25rem !important; line-height: 1.05 !important; }
+}
+
+/* Reduce vertical padding for all sections on very small screens to avoid large empty gaps */
+@media (max-width: 639px) {
+	section { padding-top: 1.5rem !important; padding-bottom: 1.5rem !important; }
+	/* Override any utility that forces 80vh hero on small screens */
+	.min-h-\[80vh\] { min-height: auto !important; }
+}
+
+@media (min-width: 640px) and (max-width: 1024px) {
+	/* Medium-small devices: more conservative hero height */
+	#home { min-height: 60vh !important; padding-top: 2rem; padding-bottom: 2rem; }
+}
+
+/* Tablet / Surface Pro adjustments: better vertical centering and responsive font sizing */
+@media (min-width: 768px) and (max-width: 1024px) {
+	main {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		min-height: calc(100vh - var(--header-h-desktop) - var(--footer-h-desktop));
+		padding-top: calc(var(--header-h-desktop) + 12px);
+		padding-bottom: calc(var(--footer-h-desktop) + 12px);
+	}
+
+	/* Center and tighten hero spacing on tablets */
+	#home { display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding-top: calc(var(--header-h-desktop) + 12px); padding-bottom: 2rem; }
+
+	/* Responsive hero title sizing for tablets */
+	#home .company-hero {
+		/* scale between 2.5rem and 4.5rem depending on viewport width */
+		font-size: clamp(2.5rem, 4.5vw, 4.5rem) !important;
+		line-height: 1.02 !important;
+		margin-bottom: 0.25rem;
+	}
+
+	/* Slightly larger body text on tablets for readability */
+	#home p, #home .text-gray-600 { font-size: 1.05rem !important; }
+}
+
+/* Center main content on phones and tablets and ensure spacing from navbar */
+@media (max-width: 1024px) {
+	/* Make the main column center its content vertically while leaving room for header/footer */
+	main {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		min-height: calc(100vh - var(--header-h-mobile) - var(--footer-h-mobile));
+		padding-top: calc(var(--header-h-mobile) + 12px);
+		padding-bottom: calc(var(--footer-h-mobile) + 12px);
+	}
+
+	/* Ensure individual sections reduce excessive top padding on smaller screens */
+	section { padding-top: 1.25rem !important; padding-bottom: 1.25rem !important; }
+
+	/* Tighter hero layout but keep centered and away from navbar */
+	#home { display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding-top: calc(var(--header-h-mobile) + 8px); }
+}
+
+/* Mobile-specific tweaks */
+@media (max-width: 767px){
+	.submit-reservation{
+		padding: 12px 16px;
+		font-size: 1rem;
+		box-shadow: 0 4px 0 rgba(0,0,0,0.06);
+		border-radius: 8px;
+	}
+}
+
+/* CustomSelect styling to match reservation form aesthetic */
+.reservation-select{ background: transparent; }
+.custom-select-dropdown, .reservation-select[role='button'], .reservation-select > button{ box-shadow: 0 6px 18px rgba(0,0,0,0.04); }
+.custom-select-dropdown{ background: var(--color-offwhite); border: 1px solid rgba(0,0,0,0.12); border-radius: 8px; padding: 0; margin-top: -1px; }
+.custom-select-dropdown li{ padding: 8px 12px; color: var(--color-charcoal); font-size: 1.05rem; }
+.custom-select-dropdown li:first-child{ padding-top: 6px; }
+
+/* Make the select and dropdown visually flush: remove bottom radius on the select and top radius on the dropdown */
+.reservation-select{ border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+.custom-select-dropdown{ border-top-left-radius: 0; border-top-right-radius: 0; }
+.custom-select-dropdown li:hover{ background: rgba(0,0,0,0.03); }
+.reservation-select{ border-radius: 8px; border: 1px solid rgba(0,0,0,0.12); padding: 0.95rem 1rem; font-size: 1.05rem; background: transparent; display: inline-flex; align-items:center; justify-content:space-between; }
+.reservation-select span{ display:inline-block; }
+.custom-select-dropdown{ max-height: 320px; overflow:auto; }
+.reservation-select:focus{ outline: 2px solid rgba(142,15,24,0.08); }
+
+/* Override browser autofill and user-agent background fills so inputs keep the
+	 page's off-white appearance instead of flashing white/blue when populated. */
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill:focus {
+	-webkit-box-shadow: 0 0 0 1000px var(--color-offwhite) inset !important;
+	box-shadow: 0 0 0 1000px var(--color-offwhite) inset !important;
+	background-color: var(--color-offwhite) !important;
+	-webkit-text-fill-color: inherit !important;
+}
+
+/* Non-webkit fallback: ensure explicit background on the form controls */
+.reservation-input, .reservation-select, .reservation-textarea {
+	background-color: var(--color-offwhite) !important;
+}
+
+/* Navbar-specific: make header 'Book Now' button smaller without affecting hero CTAs */
+.site-header .btn-primary{ padding: 8px 12px; font-size: 0.95rem; border-radius:6px; background: var(--color-red); border: none; box-shadow: none; font-weight:700; letter-spacing:0.12em; }
+@media (max-width: 767px){
+	.site-header .btn-primary{ padding:6px 10px; font-size:0.85rem }
+}
+
+/* Sticky contact buttons for tablet & mobile (bottom-centered tab bar) */
+.sticky-contact {
+	position: fixed;
+	left: 0; /* align to left edge for full-width */
+	bottom: 0; /* pin to bottom */
+	/* respect safe-area insets while remaining edge-to-edge */
+	padding-left: env(safe-area-inset-left, 0px);
+	padding-right: env(safe-area-inset-right, 0px);
+	transform: none;
+	height: 56px; /* comfortable touch target */
+	width: 100%; /* edge-to-edge */
+	max-width: 100%;
+	box-sizing: border-box; /* ensure padding is included in width to avoid overflow */
+	display: flex;
+	flex-direction: row;
+	align-items: stretch;
+	justify-content: space-between;
+	gap: 0;
+	z-index: 60;
+	background: rgba(15,17,19,0.98); /* dark, near-opaque bar */
+	border-radius: 0; /* sharp, square edges */
+	box-shadow: none; /* remove shadow for flat look */
+	border-top: 1px solid rgba(255,255,255,0.03);
+	transition: opacity .22s ease, transform .22s ease;
+}
+
+.sticky-contact .sticky-btn {
+	flex: 1; /* three equal buttons */
+	height: 56px; /* match bar height for full-bleed buttons */
+	margin: 0;
+	background: transparent;
+	color: #fff;
+	border-radius: 0; /* sharp corners */
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	text-decoration: none;
+	transition: transform .08s ease, background-color .12s ease;
+	border: 0;
+}
+.sticky-contact .sticky-btn:hover,
+.sticky-contact .sticky-btn:focus {
+	transform: none;
+	background: rgba(255,255,255,0.03); /* very subtle hover */
+	box-shadow: none; /* keep flat */
+	outline: none;
+}
+.sticky-contact .sticky-btn svg { color: inherit; }
+
+/* below-footer transition states */
+.sticky-contact.below-footer { opacity: 0; transform: translateX(-50%) translateY(6px); }
+.sticky-contact.below-footer.below-footer-visible { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* Hide on desktop, show on tablet and smaller (<=1024px) */
+@media (min-width: 1025px) {
+	.sticky-contact { display: none; }
+}
+
+/* Large tablet / small-laptop font boost
+	 Make tablet-class devices (iPad, Surface Pro, Zenbook) display larger, consistent typography
+	 without becoming overwhelming. This targets widths from 768px up to 1366px and uses
+	 clamp() so sizes scale smoothly between breakpoints. */
+@media (min-width: 768px) and (max-width: 1366px) {
+	:root { --base-font-size: 16px; }
+	html { font-size: var(--base-font-size); }
+	body { font-size: var(--base-font-size); }
+
+	/* Hero: larger, prominent but controlled */
+	#home .company-hero {
+		font-size: clamp(3rem, 6vw, 5.5rem) !important;
+		line-height: 1.02 !important;
+	}
+
+	/* Headings scale up for parity across tablet/laptop screens */
+	h1 { font-size: clamp(3.5rem, 6.5vw, 5.75rem) !important; }
+	h2 { font-size: clamp(2.5rem, 4.5vw, 4.25rem) !important; }
+	h3 { font-size: clamp(1.6rem, 3.2vw, 3rem) !important; }
+
+	/* Body text made pleasantly large on tablets */
+	p, #home p, .text-gray-600, #about p, #services p, #reviews p, #reservation p { font-size: 1.25rem !important; }
+
+	/* CTAs grow to match the larger typographic scale */
+	.hero-cta, .btn-primary { font-size: 1.125rem !important; padding: 16px 26px !important; }
+
+	/* Slightly larger logo text for balance */
+	.site-header .logo span { font-size: 1.15rem !important; }
+}
+
+
+
